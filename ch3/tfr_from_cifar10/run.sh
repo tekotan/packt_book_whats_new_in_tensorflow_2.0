@@ -1,1 +1,1 @@
-python3 create_cifar10_tfrecords.py -cf cifar-10-batches-py -vidx 4 
+python3 create_tfrecords_from_cifar10.py -cf ./cifar-10-batches-py -vidx 4 

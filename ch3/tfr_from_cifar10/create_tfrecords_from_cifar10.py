@@ -59,13 +59,15 @@ def create_tfrecords(cifar10_data_folder, validation_data_idx):
   batch_files = _get_file_names(validation_data_idx)
   tfrecords_outdir = './tfrecords'
   for data_type in ['train', 'eval', 'test']:
-    input_files = [os.path.join(cifar10_data_folder, i) for i in batch_files[data_type]]
+    input_files = [os.path.join(cifar10_data_folder, i) \
+        for i in batch_files[data_type]]
     resp_dir = tfrecords_outdir + '/' + data_type
     shutil.rmtree(resp_dir, ignore_errors=True)
     os.makedirs(resp_dir)
     for ifile in input_files:
       batch_file_name = os.path.basename(ifile).split('.')[0]
-      tfrecords_outfile_name = os.path.join(tfrecords_outdir, data_type, batch_file_name + '.tfr')
+      tfrecords_outfile_name = \
+          os.path.join(tfrecords_outdir, data_type, batch_file_name + '.tfr')
       convert_to_tfrecord([ifile], tfrecords_outfile_name)
 
 def main(argv):
@@ -74,7 +76,8 @@ def main(argv):
     print('argv: {}'.format(argv))
 
   parser = argparse.ArgumentParser()
-  parser.add_argument('-vidx', '--validation_data_idx', type=int, choices=[1, 2, 3, 4, 5], 
+  parser.add_argument('-vidx', '--validation_data_idx', type=int,
+      choices=[1, 2, 3, 4, 5], 
       help='Define model to run', default=5)
   parser.add_argument('-cf', '--cifar10_data_folder', type=str, 
       required=True, help='Cifar10 data folder path')
