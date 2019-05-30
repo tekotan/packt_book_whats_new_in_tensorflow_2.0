@@ -12,20 +12,19 @@ def _int64_feature(value):
 def _bytes_feature(value):
   return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
-# From tensorflow models
 def read_pickle_from_file(filename):
-  with tf.gfile.Open(filename, 'rb') as f:
+  """ function reads pickle file"""
+  with tf.io.gfile.GFile(filename, 'rb') as f:
     if sys.version_info >= (3, 0):
       data_dict = pickle.load(f, encoding='bytes')
     else:
       data_dict = pickle.load(f)
   return data_dict
 
-# From tensorflow models
 def convert_to_tfrecord(input_files, output_file):
   """Converts a file to TFRecords."""
   print('Generating %s' % output_file)
-  with tf.python_io.TFRecordWriter(output_file) as record_writer:
+  with tf.io.TFRecordWriter(output_file) as record_writer:
     for input_file in input_files:
       data_dict = read_pickle_from_file(input_file)
       data = data_dict[b'data']
@@ -39,8 +38,8 @@ def convert_to_tfrecord(input_files, output_file):
             }))
         record_writer.write(example.SerializeToString())
 
-# From tensorflow models
 def _get_file_names(eval_file_idx):
+  """ get the file names for eval """
   file_names = {}
   train_files_idx_list = [1, 2, 3, 4, 5]
   train_files_idx_list.remove(eval_file_idx)
@@ -88,5 +87,4 @@ def main(argv):
   create_tfrecords(cifar10_data_folder, validation_data_idx)
 
 if __name__ == '__main__':
-  tf.logging.set_verbosity(tf.logging.INFO)
-  tf.app.run(main)
+  main(sys.argv)

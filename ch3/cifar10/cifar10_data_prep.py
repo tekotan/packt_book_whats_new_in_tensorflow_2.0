@@ -1,4 +1,5 @@
 """ Class for house data preparation, feature engineering etc."""
+import sys
 import glob
 import pickle
 import numpy as np
@@ -49,6 +50,7 @@ class Cifar10Data(object):
     else:
       # Just create batches for eval and test
       dataset = dataset.batch(self.batch_size)
+    dataset = dataset.prefetch(self.batch_size)
     return dataset
 
   def _parse_and_decode(self, serialized_example):
@@ -59,7 +61,7 @@ class Cifar10Data(object):
           'label': tf.io.FixedLenFeature([], tf.int64),
           }
         )
-    image = tf.decode_raw(features['image'], tf.uint8)
+    image = tf.io.decode_raw(features['image'], tf.uint8)
     image = tf.cast(image, tf.float32)
     # image = image / 255.
     image.set_shape(self.image_num_channels * self.image_height * self.image_width)
@@ -95,5 +97,4 @@ def main(argv):
     #plt.show()
 
 if __name__ == '__main__':
-  tf.compat.v1.logging.set_verbosity(tf.logging.INFO)
-  tf.compat.v1.app.run(main)
+  main(sys.argv)

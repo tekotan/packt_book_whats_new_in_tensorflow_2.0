@@ -1,16 +1,16 @@
 """ Cifar10 classification model """
 # coding: utf-8
+import sys
 import os
 import shutil
 import tensorflow as tf
-#from tensorflow.python import debug as tf_debug
 
 from cifar10_data_prep import Cifar10Data
 
 class Cifar10Classification(object):
   """ Lower API based prediction
   """
-  def __init__(self, batch_size, conv=False):
+  def __init__(self, batch_size):
     """ constructor
     Args:
       batch_size (int): batch size
@@ -30,20 +30,35 @@ class Cifar10Classification(object):
         (self.data.image_height, self.data.image_width, \
         self.data.image_num_channels)
 
-    self.model.add(tf.keras.layers.Conv2D(filters=64, 
+    self.model.add(tf.keras.layers.Conv2D(filters=32, 
       kernel_size=[3, 3], padding='same', 
       activation='relu', input_shape=input_shape))
+
+    self.model.add(tf.keras.layers.Conv2D(filters=32, 
+      kernel_size=[3, 3], padding='same', 
+      activation='relu'))
+
     self.model.add(tf.keras.layers.MaxPooling2D(pool_size=[2, 2]))
+    self.model.add(tf.keras.layers.Dropout(0.25))
+
+    self.model.add(tf.keras.layers.Conv2D(filters=64, 
+      kernel_size=[3, 3], padding='same', 
+      activation='relu'))
+
+    self.model.add(tf.keras.layers.MaxPooling2D(pool_size=[2, 2]))
+    self.model.add(tf.keras.layers.Dropout(0.25))
 
     # flatten
     self.model.add(tf.keras.layers.Flatten())
 
+    self.model.add(tf.keras.layers.Dense(units=512, activation='relu'))
+    self.model.add(tf.keras.layers.Dropout(0.5))
     self.model.add(tf.keras.layers.Dense(units=10, activation='softmax'))
 
     self.model.summary()
 
     self.model.compile(loss='categorical_crossentropy', 
-      optimizer=tf.train.AdamOptimizer(learning_rate),
+      optimizer=tf.keras.optimizers.Adam(learning_rate),
       metrics=['accuracy'])
 
 
@@ -63,7 +78,7 @@ class Cifar10Classification(object):
     print('\ntest loss, test acc:', results)
 
 def main(argv):
-  """ main routing to use LinearRegression model """
+  """ main routine """
   if argv is not None:
     print('argv: {}'.format(argv))
 
@@ -80,5 +95,4 @@ def main(argv):
   cifar_classification.check_test_accuracy()
 
 if __name__ == '__main__':
-  tf.compat.v1.logging.set_verbosity(tf.logging.INFO)
-  tf.compat.v1.app.run(main)
+  main(sys.argv)

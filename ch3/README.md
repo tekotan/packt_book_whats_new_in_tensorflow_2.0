@@ -1,21 +1,10 @@
-# Code to illustrate creation of tfrecords 
+# Code for Chapter 3
 
-## images: Create tfrecords from images
-### There are three folders, train, validate and test. 
-### File names of the images have labels. H*.png is label 1, NH*.png is label 0
-These images are taken from ICCAD8 dataset which was available as part of opensource project earlier. <confidentiality??>
+## cifar10
+[README](cifar10/README.md)
 
-## cifar10: Create tfrecords from cifar10 dataset stored in pkl format
-To run:
-```bash
-cd cifar10
-python3 create_tfrecords_from_cifar10.py -cf ./cifar-10-batches-py -vidx 4 
-```
+## images
+[README](images/README.md)
 
-## Feeding tf.data.Dataset object to a tf.keras model
-To run:
-```bash
-cd cifar10
-python3 create_tfrecords_from_cifar10.py -cf ./cifar-10-batches-py -vidx 4 
-```
-
+## mnist
+[README](mnist/README.md)
