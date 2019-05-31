@@ -1,4 +1,5 @@
 """ Create tfrecords for image data"""
+import sys
 import os
 import glob
 import shutil
@@ -36,7 +37,7 @@ class ImageTFRecordsCreator(object):
     """
     """
     # Read the image file.
-    with tf.gfile.GFile(filename, 'rb') as f:
+    with tf.io.gfile.GFile(filename, 'rb') as f:
       image = f.read()
     d_file = os.path.basename(filename)
     if 'NHS' in d_file:
@@ -50,7 +51,7 @@ class ImageTFRecordsCreator(object):
     """ Convert sharded input files to tfrecords
     """
     print('Generating %s' % output_file)
-    with tf.python_io.TFRecordWriter(output_file) as record_writer:
+    with tf.io.TFRecordWriter(output_file) as record_writer:
       for input_file in input_files:
         data, label = self._read_image_file(input_file)
         example = tf.train.Example(features=tf.train.Features(
@@ -125,5 +126,4 @@ def main(argv):
   tfr_creator.create_tfrecords(input_folder, tfrecords_outdir)
 
 if __name__ == '__main__':
-  tf.logging.set_verbosity(tf.logging.INFO)
-  tf.app.run(main)
+  main(sys.argv)
