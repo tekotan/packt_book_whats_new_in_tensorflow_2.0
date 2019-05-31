@@ -1,4 +1,5 @@
 """ Load 2012 iccad dataset from tfrecords"""
+import sys
 import glob
 import argparse
 import numpy as np
@@ -50,11 +51,11 @@ class DataPrep(object):
 
   def _parse_and_decode(self, serialized_example):
     """ parse and decode each image """
-    features = tf.parse_single_example(
+    features = tf.io.parse_single_example(
         serialized_example, 
         features={
-          'image': tf.FixedLenFeature([], tf.string),
-          'label': tf.FixedLenFeature([], tf.int64),
+          'image': tf.io.FixedLenFeature([], tf.string),
+          'label': tf.io.FixedLenFeature([], tf.int64),
           }
         )
     
@@ -92,5 +93,4 @@ def main(argv):
 
 
 if __name__ == '__main__':
-  tf.logging.set_verbosity(tf.logging.INFO)
-  tf.app.run(main)
+  main(sys.argv)
