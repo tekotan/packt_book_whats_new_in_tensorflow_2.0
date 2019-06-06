@@ -1,4 +1,3 @@
 # Code for Chapter 4
 
-## cifar10
-[README](cifar10/README.md)
+keras_models.ipynb ==> Illustrates tf.keras all three models
