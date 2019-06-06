@@ -15,3 +15,6 @@ pip3 install tensorflow-gpu
 ## Chapter 3 related code
 [Please refer Chapter 3 README.md](ch3/README.md)
 
+## Chapter 4 related code
+[Please refer Chapter 4 README.md](ch4/README.md)
+
